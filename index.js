@@ -17,8 +17,10 @@ mongoose.connect('mongodb://localhost:27017/GuateHablaBD', {useNewUrlParser: tru
 
         var userModel = new User()
 
+        userModel.img = 'https://th.bing.com/th/id/R.b5191f32201ffaa11c934ef5e8336aa6?rik=oHQqwkVkiV8jsg&riu=http%3a%2f%2fwww.coordinadora.com%2fwp-content%2fuploads%2fsidebar_usuario-corporativo.png&ehk=1xJb2We0RTYHhqlCyflIts8iyhfaNrSLijnToqgjtQg%3d&risl=&pid=ImgRaw'
         userModel.user = user1
         userModel.email = email
+        userModel.name = user1
         userModel.rol = rol
 
         User.find({email: userModel.email}).exec((err, userStored)=>{
