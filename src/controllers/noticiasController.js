@@ -15,7 +15,7 @@ function saveNoticiasAdmin(req, res){
         noticiasModel.titulo = params.titulo
         noticiasModel.descripcion = params.descripcion
         noticiasModel.fechaCreacion = params.fechaCreacion
-        noticiasModel.img = 'https://th.bing.com/th/id/OIP.g6uTSDCYu_OuguJzEyX2MgHaDF?pid=ImgDet&rs=1'
+        noticiasModel.img = params.img
 
         Noticias.find({
             $or:[
