@@ -10,6 +10,7 @@ var noticiasSchema = Schema({
     img: String,
     comentarios: [{
         userIdComentario: {type: Schema.Types.ObjectId, ref: 'User'},
+        username: String,
         descripcionComentario: String
     }]
 })

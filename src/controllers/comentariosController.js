@@ -11,6 +11,7 @@ function saveComentarioNoticia(req, res){
         $push: {
             comentarios: {
                 userIdComentario: userId,
+                username: params.username,
                 descripcionComentario: params.descripcionComentario,
             }
         }
