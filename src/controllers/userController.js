@@ -154,7 +154,7 @@ function getUserIdAdmin(req, res){
         return res.status(500).send({ mensaje: "Solo el Administrador puede ver a otro usuario" })
     }
 
-    User.findOne({ $or: [{ _id: userId }] }).exec ((err, userStored)=>{
+    User.find().exec ((err, userStored)=>{
         if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
         if(!userStored) return res.status(404).send({mensaje: 'Error al obtener los datos del usuario'})
 
