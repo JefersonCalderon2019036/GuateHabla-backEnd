@@ -8,6 +8,7 @@ var cors = require('cors')
 //Importaciones de rutas
 var User = require('./src/routs/userRoutes')
 var Noticias = require('./src/routs/noticiasRouts')
+var Denuncias = require('./src/routs/denunciasRoutes')
 
 //Middlewares
 app.use(bodyParser.urlencoded({extended:false}))
@@ -17,6 +18,6 @@ app.use(bodyParser.json())
 app.use(cors())
 
 //rutas
-app.use('/api', User, Noticias)
+app.use('/api', User, Noticias, Denuncias)
 
 module.exports = app

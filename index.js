@@ -22,6 +22,7 @@ mongoose.connect('mongodb://localhost:27017/GuateHablaBD', {useNewUrlParser: tru
         userModel.email = email
         userModel.name = user1
         userModel.rol = rol
+        userModel.estado = 'DISPONIBLE'
 
         User.find({email: userModel.email}).exec((err, userStored)=>{
             if(userStored && userStored.length == 1){

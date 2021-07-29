@@ -8,7 +8,7 @@ const { findById } = require('../models/user')
 
 function registerUser(req, res){
     var userModel = new User()
-    var params = req.body
+    var params = req.body;
 
     if(params.user && params.email && params.password && params.dpi){
 

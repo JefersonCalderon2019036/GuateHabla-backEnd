@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "44d35d41-1b28-4cc0-ad92-00dfcbf8921f",
+		"_postman_id": "c42e3682-1cd6-4c13-8812-525b2e7d89a0",
 		"name": "GuateHabla",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,7 +18,7 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Nestor",
+									"value": "Axel",
 									"type": "text"
 								},
 								{
@@ -28,12 +28,12 @@
 								},
 								{
 									"key": "user",
-									"value": "Nestorin",
+									"value": "Axel",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "nestor@gmail.com",
+									"value": "axel@gmail.com",
 									"type": "text"
 								},
 								{
@@ -49,6 +49,11 @@
 								{
 									"key": "telefono",
 									"value": "45670912",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "DISPONIBLE",
 									"type": "text"
 								}
 							]
@@ -262,13 +267,23 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Nestor",
+									"value": "Policiaxd",
+									"type": "text"
+								},
+								{
+									"key": "rol",
+									"value": "ROL_POLI",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "OCUPADO",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/api/updateUserAdmin/60f754de4fc26611241b30a4",
+							"raw": "localhost:3000/api/updateUserAdmin/6101cfb527ee37573cb1dbd0",
 							"host": [
 								"localhost"
 							],
@@ -276,7 +291,7 @@
 							"path": [
 								"api",
 								"updateUserAdmin",
-								"60f754de4fc26611241b30a4"
+								"6101cfb527ee37573cb1dbd0"
 							]
 						}
 					},
@@ -658,6 +673,190 @@
 								"api",
 								"verTodosComentarios",
 								"60fa39dafc67f8275485316b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Denuncias",
+			"item": [
+				{
+					"name": "AddDenuncia",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxZTBlZDgxYjYwYzYwN2NiM2RmNGUiLCJuYW1lIjoiQXhlbCIsImVtYWlsIjoiYXhlbEBnbWFpbC5jb20iLCJyb2wiOiJST0xfVVNVQVJJTyIsImlhdCI6MTYyNzUxMzA4NX0.5OzQoSXLenIcb3OHROhe7_piVh6bsUMMVdgt6oHNxCg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "descripcion",
+									"value": "asdgfasdgasdf",
+									"type": "text"
+								},
+								{
+									"key": "tipoDenuncia",
+									"value": "asdfasf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/addDenuncia/6101e0ed81b60c607cb3df4e",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"addDenuncia",
+								"6101e0ed81b60c607cb3df4e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListDenuncias",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxYjY2Zjg3Y2Q5ZjAzNTQ4MGJhYmYiLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluIiwicm9sIjoiUk9MX0FETUlOIiwiaWF0IjoxNjI3NTE4MzYyfQ.TLW3P_QICohcecJqxfSKQo30DZiUDFWfcn22KBA6EIQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/listDenuncias",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"listDenuncias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListDenunciasUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxZTBlZDgxYjYwYzYwN2NiM2RmNGUiLCJuYW1lIjoiQXhlbCIsImVtYWlsIjoiYXhlbEBnbWFpbC5jb20iLCJyb2wiOiJST0xfVVNVQVJJTyIsImlhdCI6MTYyNzUxODk5OH0.91JyhGhuVIGQEawkm_8DKBo7WigyUfLu-lvLl1XkTw4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/listDenunciasUser/6101e0ed81b60c607cb3df4e",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"listDenunciasUser",
+								"6101e0ed81b60c607cb3df4e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListDenunciasPoli",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxZDA0YzI3ZWUzNzU3M2NiMWRiZDEiLCJuYW1lIjoiUG9saWNpYXhkIiwiZW1haWwiOiJwb2xpY2lhNEBnbWFpbC5jb20iLCJyb2wiOiJST0xfUE9MSSIsImlhdCI6MTYyNzUyMDYwM30.OKVp4Ux4oCOaYNG7aIFc8GiZDZNmKOAPw5uFfiNSOmE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/listDenunciasPoli/6101d04c27ee37573cb1dbd1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"listDenunciasPoli",
+								"6101d04c27ee37573cb1dbd1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarDenunciasActivas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxZDA0YzI3ZWUzNzU3M2NiMWRiZDEiLCJuYW1lIjoiUG9saWNpYXhkIiwiZW1haWwiOiJwb2xpY2lhNEBnbWFpbC5jb20iLCJyb2wiOiJST0xfUE9MSSIsImlhdCI6MTYyNzUyMDYwM30.OKVp4Ux4oCOaYNG7aIFc8GiZDZNmKOAPw5uFfiNSOmE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/listDenunciasActivas",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"listDenunciasActivas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDenuncia",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTAxZTBlZDgxYjYwYzYwN2NiM2RmNGUiLCJuYW1lIjoiQXhlbCIsImVtYWlsIjoiYXhlbEBnbWFpbC5jb20iLCJyb2wiOiJST0xfVVNVQVJJTyIsImlhdCI6MTYyNzUzMzA0M30.9MTFBJH5PFvfMPkakqcTPYia7BGbC_x847A82Yoxb5c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "descripcion",
+									"value": "actualice la descripcion",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/editDenuncia/6101f0a7082d4766f8e08378",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"editDenuncia",
+								"6101f0a7082d4766f8e08378"
 							]
 						}
 					},
