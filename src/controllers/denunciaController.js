@@ -2,9 +2,11 @@
 
 var Denuncia = require('../models/denuncias')
 var User = require('../models/user')
+var Chat = require('../models/chat')
 
 function addDenuncia(req, res) {
     var denuncia = new Denuncia();
+    var chat = new Chat();
     var params = req.body;
     var userId = req.params.idU;
 
@@ -24,7 +26,6 @@ function addDenuncia(req, res) {
                 denuncia.tipoDenuncia = params.tipoDenuncia;
                 denuncia.status = 'En revision';
                 denuncia.img = params.img;
-
                 denuncia.save((err, denunciaSave) => {
                     if (err) {
                         return res.status(500).send({ message: 'error en la peticion' + err })
@@ -33,7 +34,22 @@ function addDenuncia(req, res) {
                         })
                         User.findByIdAndUpdate({ _id: poliFound._id }, { estado: 'OCUPADO' }, { new: true }, (err, poliState) => {
                         })
-                        return res.send(denunciaSave)
+                        User.findById({ _id: userId }, (err, userFound) => {
+                            chat.userId = userId;
+                            chat.username = userFound.name;
+                            chat.encargadoId = poliFound._id;
+                            chat.nameEncargado = poliFound.name;
+                            chat.status = 'ACTIVO';
+                            chat.save((err,chatCreado) => {
+                                if (err) {
+                                    return res.status(500).send({ message: 'error en la peticion' + err})
+                                }else if (chatCreado){
+                                    return res.send(denunciaSave)
+                                }else{
+                                    return res.status(500).send({ message: 'no se pudo crear el chat'})
+                                }
+                            })
+                        })
                     } else {
                         return res.status(500).send({ message: 'no se pudo guardar la denuncia' })
                     }
