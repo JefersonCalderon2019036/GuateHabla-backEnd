@@ -32,7 +32,7 @@ mongoose.connect('mongodb://localhost:27017/GuateHablaBD', {useNewUrlParser: tru
                     userModel.password = bcryptPassword
 
                     userModel.save((err, userSave)=>{
-                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
                         if(userSave){
                             return console.log(userSave)
                         }else{

@@ -28,7 +28,7 @@ function registerUser(req, res){
                 { email: userModel.email }
             ]
         }).exec((err, userStored)=>{
-            if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+            if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
             if(userStored && userStored.length >= 1){
                 return res.status(400).send({mensaje: 'El usuario o email que intentas ingresar ya existe'})
             }else{
@@ -36,7 +36,7 @@ function registerUser(req, res){
                     userModel.password = bcryptPassword
                 
                     userModel.save((err, userSave)=>{
-                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
                         if(userSave){
                             return res.status(200).send({userSave})
                         }else{
@@ -58,11 +58,11 @@ function login(req, res){
     if (params.email && params.password) {
         User.findOne({ email: params.email.toLowerCase() }, (err, userFind) => {
             if (err) {
-                return res.status(500).send({ message: 'Error general' });
+                return res.status(500).send({ message: 'Error general'  + err});
             } else if (userFind) {
                 bcrypt.compare(params.password, userFind.password, (err, checkPassword) => {
                     if (err) {
-                        return res.status(500).send({ message: 'Error general en la verificación de la contraseña' });
+                        return res.status(500).send({ message: 'Error general en la verificación de la contraseña' + err });
                     } else if (checkPassword) {
                         if (params.gettoken) {
                             delete userFind.password
@@ -94,7 +94,7 @@ function updateUser(req, res){
     }
 
     User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdate)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
         if(!userUpdate) return res.status(404).send({mensaje: 'No se ha podido actualizar el usuario'})
 
         return res.status(200).send(userUpdate)
@@ -110,7 +110,7 @@ function deleteUser(req, res){
     }
 
     User.findByIdAndDelete(userId, (err, userDelete)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
         if(!userDelete) return res.status(400).send({mensaje: 'No se pudo eliminar el usuario'})
 
         return res.status(200).send({mensaje: 'Se elimino correctamente el usuario con el id: '+userId})
@@ -122,7 +122,7 @@ function getUsers(req, res){
         return res.status(500).send({ mensaje: "Solo el Administrador puede ver todos los usuarios" })
     }
     User.find((err, userStored)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
         if(!userStored) return res.status(500).send({mensaje: 'Error al obtener los usuarios'})
         if(userStored <= 0){
             return res.status(200).send({mensaje: 'No hay ningun usuario'})
@@ -136,7 +136,7 @@ function getUserId(req, res){
     var userId = req.params.idU
 
     User.findOne({ $or: [{ _id: userId }] }).exec ((err, userStored)=>{
-        if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(400).send({mensaje: 'Error en la peticion'  + err})
         if(!userStored) return res.status(404).send({mensaje: 'Error al obtener los datos del usuario'})
 
         return res.status(200).send(userStored)
@@ -151,7 +151,7 @@ function getUserIdAdmin(req, res){
     }
 
     User.find().exec ((err, userStored)=>{
-        if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(400).send({mensaje: 'Error en la peticion'  + err})
         if(!userStored) return res.status(404).send({mensaje: 'Error al obtener los datos del usuario'})
 
         return res.status(200).send(userStored)
@@ -171,7 +171,7 @@ function updateUserAdmin(req, res){
     console.log(update);
 
     User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdate)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
         if(!userUpdate) return res.status(404).send({mensaje: 'No se ha podido actualizar el usuario'})
 
         return res.status(200).send(userUpdate)
@@ -187,7 +187,7 @@ function deleteUserAdmin(req, res){
     }
 
     User.findByIdAndDelete(userId, (err, userDelete)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
         if(!userDelete) return res.status(400).send({mensaje: 'No se pudo eliminar el usuario'})
 
         return res.status(200).send({mensaje: 'Se elimino correctamente el usuario con el id: '+userId})
@@ -220,7 +220,7 @@ function saveUserAdmin(req, res){
                 { email: userModel.email }
             ]
         }).exec((err, userStored)=>{
-            if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+            if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
             if(userStored && userStored.length >= 1){
                 return res.status(400).send({mensaje: 'El usuario o email que intentas ingresar ya existe'})
             }else{
@@ -228,7 +228,7 @@ function saveUserAdmin(req, res){
                     userModel.password = bcryptPassword
                 
                     userModel.save((err, userSave)=>{
-                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
+                        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
                         if(userSave){
                             return res.status(200).send({userSave})
                         }else{

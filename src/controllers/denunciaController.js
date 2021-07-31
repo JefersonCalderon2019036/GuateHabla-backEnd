@@ -69,7 +69,7 @@ function listDenuncias(req, res){
     }
     Denuncia.find((err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -86,7 +86,7 @@ function listDenunciasUser(req, res){
     }
     Denuncia.find({userId: userId},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -103,7 +103,7 @@ function listDenunciasPoli(req, res){
     }
     Denuncia.find({encargadoId: encargadoId},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -118,7 +118,7 @@ function listDenunciasActivas(req, res) {
     }
     Denuncia.find({status: 'En revision'},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -132,7 +132,7 @@ function editDenuncia(req, res) {
     var update = req.body
     Denuncia.find({_id: idDenuncia},(err, denunciaFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion'  + err})
         } else if(denunciaFound){
             //return res.send(denunciaFound)
             if((denunciaFound.userId === req.user.sub) || (denunciaFound.encargadoId === req.user.sub)){
@@ -153,11 +153,34 @@ function editDenuncia(req, res) {
     })
 }
 
+function finDenuncia(req, res){
+    var idDenuncia = req.params.idD;
+
+    Denuncia.find({_id: idDenuncia}, (err, denunciaFound) => {
+        if(err) {
+            return res.status(500).send({ message: 'error en la peticion'  + err})
+        }else if(denunciaFound){
+            Denuncia.findByIdAndUpdate({_id: idDenuncia}, {status: 'Finalizado'}, {new: true}, (err,denunciaFin)=>{
+                if(err){
+                    return res.status(500).send({ message: 'error en la peticion'  + err})
+                }else if(denunciaFin){
+                    return res.send(denunciaFin)
+                }else{
+                    return res.status(500).send({ message: 'no se pudo finalizar la denuncia'})
+                }
+            })
+        }else{
+            return res.status(500).send({ message: 'no se encontro la denuncia'})
+        }
+    })
+}
+
 module.exports = {
     addDenuncia,
     listDenuncias,
     listDenunciasUser,
     listDenunciasPoli,
     listDenunciasActivas,
-    editDenuncia
+    editDenuncia,
+    finDenuncia
 }

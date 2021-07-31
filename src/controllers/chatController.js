@@ -9,7 +9,7 @@ function verChat(req, res) {
     
     Chat.findById({ _id: idChat}, (err, chatFound) => {
         if(err){
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         }else if(chatFound){
             if((chatFound.userId === req.user.sub) || (chatFound.encargadoId === req.user.sub)){
                 return res.status(500).send({ message: 'no tienes permiso para ver este chat'})
@@ -35,7 +35,7 @@ function sendMessage(req, res) {
         }
     }, {new: true}, (err, mensajeAgregado)=>{
         if(err){
-            return res.status(500).send({ message: 'error en la peticion'})
+            return res.status(500).send({ message: 'error en la peticion' + err})
         }else if(mensajeAgregado){
             return res.send(mensajeAgregado)
         }else{
@@ -44,7 +44,22 @@ function sendMessage(req, res) {
     })
 }
 
+function endChat(req, res) {
+    var idChat = req.params.idC;
+    var idDenuncia = req.params.idD
+
+    Denuncia.find({_id: idDenuncia}, (err, denunciaFound) =>{
+        if(denunciaFound.status == 'En revision'){
+            return res.status(500).send({ message: 'no se puede eliminar el chat por que la denuncia sigue en revision'})
+        }
+        if(err){
+            return res.status(500).send({ message : 'error en la peticion' + err})
+        }
+    })
+}
+
 module.exports = {
     verChat,
-    sendMessage
+    sendMessage,
+    endChat
 }
