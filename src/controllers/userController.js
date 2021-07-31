@@ -168,6 +168,7 @@ function updateUserAdmin(req, res){
     var update = req.body
 
     delete update.password
+    console.log(update);
 
     User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdate)=>{
         if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
