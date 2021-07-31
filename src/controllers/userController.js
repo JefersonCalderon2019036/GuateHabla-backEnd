@@ -135,10 +135,6 @@ function getUsers(req, res){
 function getUserId(req, res){
     var userId = req.params.idU
 
-    if(userId != req.user.sub){
-        return res.status(500).send({mensaje: 'No tienes permisos para editar este usuario'})
-    }
-
     User.findOne({ $or: [{ _id: userId }] }).exec ((err, userStored)=>{
         if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
         if(!userStored) return res.status(404).send({mensaje: 'Error al obtener los datos del usuario'})
