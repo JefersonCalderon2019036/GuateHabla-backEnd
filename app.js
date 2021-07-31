@@ -9,6 +9,7 @@ var cors = require('cors')
 var User = require('./src/routs/userRoutes')
 var Noticias = require('./src/routs/noticiasRouts')
 var Denuncias = require('./src/routs/denunciasRoutes')
+var Chat = require('./src/routs/chatRoutes')
 
 //Middlewares
 app.use(bodyParser.urlencoded({extended:false}))
@@ -18,6 +19,6 @@ app.use(bodyParser.json())
 app.use(cors())
 
 //rutas
-app.use('/api', User, Noticias, Denuncias)
+app.use('/api', User, Noticias, Denuncias, Chat)
 
 module.exports = app
