@@ -156,19 +156,30 @@ function editDenuncia(req, res) {
 function finDenuncia(req, res){
     var idDenuncia = req.params.idD;
 
-    Denuncia.find({_id: idDenuncia}, (err, denunciaFound) => {
+    Denuncia.findOne({_id: idDenuncia},{userId: 1}).exec((err, denunciaFound) => {
         if(err) {
             return res.status(500).send({ message: 'error en la peticion'  + err})
         }else if(denunciaFound){
-            Denuncia.findByIdAndUpdate({_id: idDenuncia}, {status: 'Finalizado'}, {new: true}, (err,denunciaFin)=>{
+            console.log(denunciaFound)
+            console.log(denunciaFound.userId);
+            if(denunciaFound.encargadoId === req.user.sub){
+                return res.status(500).send({message: 'no tienes permiso para finalizar la denuncia'})
+            }else{
+                Denuncia.findByIdAndUpdate({_id: idDenuncia}, {status: 'Finalizado'}, {new: true}, (err,denunciaFin)=>{
                 if(err){
                     return res.status(500).send({ message: 'error en la peticion'  + err})
                 }else if(denunciaFin){
+                    User.findByIdAndUpdate({ _id: denunciaFound.userId }, { estado: 'Sin denuncia' }, { new: true }, (err, userState) => {
+                    })
+                    User.findByIdAndUpdate({ _id: req.user.sub }, { estado: 'DISPONIBLE' }, { new: true }, (err, poliState) => {
+                    })
                     return res.send(denunciaFin)
                 }else{
                     return res.status(500).send({ message: 'no se pudo finalizar la denuncia'})
                 }
             })
+            }
+            
         }else{
             return res.status(500).send({ message: 'no se encontro la denuncia'})
         }

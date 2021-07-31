@@ -11,4 +11,5 @@ api.get('/listDenunciasUser/:idU',mdAuth.ensureAuth, denunciaController.listDenu
 api.get('/listDenunciasPoli/:idP',mdAuth.ensureAuth, denunciaController.listDenunciasPoli);
 api.get('/listDenunciasActivas',mdAuth.ensureAuth, denunciaController.listDenunciasActivas);
 api.put('/editDenuncia/:idD',mdAuth.ensureAuth, denunciaController.editDenuncia);
+api.put('/finDenuncia/:idD',mdAuth.ensureAuth, denunciaController.finDenuncia);
 module.exports = api

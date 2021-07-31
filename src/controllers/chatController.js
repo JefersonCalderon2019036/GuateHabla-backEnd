@@ -48,12 +48,24 @@ function endChat(req, res) {
     var idChat = req.params.idC;
     var idDenuncia = req.params.idD
 
-    Denuncia.find({_id: idDenuncia}, (err, denunciaFound) =>{
+    Denuncia.findOne({_id: idDenuncia}, (err, denunciaFound) =>{
         if(denunciaFound.status == 'En revision'){
             return res.status(500).send({ message: 'no se puede eliminar el chat por que la denuncia sigue en revision'})
         }
         if(err){
             return res.status(500).send({ message : 'error en la peticion' + err})
+        }else if(denunciaFound){
+            Chat.findByIdAndDelete({ _id: idChat}, (err, chatDelete) =>{
+                if(err){
+                    return res.status(500).send({ message: 'error en la peticion' + err})
+                }else if(chatDelete){
+                    return res.send(chatDelete)
+                }else{
+                    return res.status(500).send({ message: 'no se elimino el chat'})
+                }
+            })
+        }else{
+            return res.status(500).send({ message: 'no se encontro la denuncia'})
         }
     })
 }
