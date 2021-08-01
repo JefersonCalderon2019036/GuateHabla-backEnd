@@ -44,7 +44,22 @@ function addDenuncia(req, res) {
                                 if (err) {
                                     return res.status(500).send({ message: 'error en la peticion' + err})
                                 }else if (chatCreado){
-                                    return res.send(denunciaSave)
+                                    Chat.findByIdAndUpdate(chatCreado._id, {
+                                        $push: {
+                                            Messages: {
+                                                idUserMessage: chatCreado.encargadoId,
+                                                mensaje: "Hola soy el policia encargado de su denuncia mi nombre es "+chatCreado.nameEncargado +" puedes comunicarte con migo por medio de este medio, es un chat esclusivo y es para mejorar su seguridad no lo muestres con alguien mas."
+                                            }
+                                        }
+                                    }, {new: true}, (err, mensajeAgregado)=>{
+                                        if(err){
+                                            return res.status(500).send({ message: 'error en la peticion' + err})
+                                        }else if(mensajeAgregado){
+                                            return res.send(chatCreado)
+                                        }else{
+                                            return res.status(500).send({ message:'no se pudo enviar el mensaje'})
+                                        }
+                                    })
                                 }else{
                                     return res.status(500).send({ message: 'no se pudo crear el chat'})
                                 }
@@ -64,12 +79,10 @@ function addDenuncia(req, res) {
 }
 
 function listDenuncias(req, res){
-    if(req.user.rol != "ROL_ADMIN") {
-        return res.status(500).send({ mensaje: "Solo el Administrador puede listar todas las denuncias"})
-    }
+    
     Denuncia.find((err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion' + err})
+            return res.status(500).send({ message: 'error en la peticion'})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -81,12 +94,9 @@ function listDenuncias(req, res){
 function listDenunciasUser(req, res){
     var userId = req.params.idU;
 
-    if(userId != req.user.sub) {
-        return res.status(500).send({ mensaje: "No puedes ver las denuncias este usuario"})
-    }
     Denuncia.find({userId: userId},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion' + err})
+            return res.status(500).send({ message: 'error en la peticion'})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -98,12 +108,9 @@ function listDenunciasUser(req, res){
 function listDenunciasPoli(req, res){
     var encargadoId = req.params.idP;
 
-    if(encargadoId != req.user.sub) {
-        return res.status(500).send({ mensaje: "No puedes ver las denuncias que atendio este policia"})
-    }
     Denuncia.find({encargadoId: encargadoId},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion' + err})
+            return res.status(500).send({ message: 'error en la peticion'})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -113,12 +120,10 @@ function listDenunciasPoli(req, res){
 }
 
 function listDenunciasActivas(req, res) {
-    if(req.user.rol != "ROL_POLI") {
-        return res.status(500).send({ mensaje: "Solo el policia puede listar las denuncias activas"})
-    }
+    
     Denuncia.find({status: 'En revision'},(err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion' + err})
+            return res.status(500).send({ message: 'error en la peticion'})
         } else if(denunciasFound){
             return res.send(denunciasFound)
         }else{
@@ -132,7 +137,7 @@ function editDenuncia(req, res) {
     var update = req.body
     Denuncia.find({_id: idDenuncia},(err, denunciaFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'  + err})
+            return res.status(500).send({ message: 'error en la peticion'})
         } else if(denunciaFound){
             //return res.send(denunciaFound)
             if((denunciaFound.userId === req.user.sub) || (denunciaFound.encargadoId === req.user.sub)){
@@ -153,35 +158,16 @@ function editDenuncia(req, res) {
     })
 }
 
-function finDenuncia(req, res){
-    var idDenuncia = req.params.idD;
+function OneDenuncia(req, res){
+    var idD = req.params.idD;
 
-    Denuncia.findOne({_id: idDenuncia},{userId: 1}).exec((err, denunciaFound) => {
+    Denuncia.findById( idD, (err, denunciasFound) => {
         if(err) {
-            return res.status(500).send({ message: 'error en la peticion'  + err})
-        }else if(denunciaFound){
-            console.log(denunciaFound)
-            console.log(denunciaFound.userId);
-            if(denunciaFound.encargadoId === req.user.sub){
-                return res.status(500).send({message: 'no tienes permiso para finalizar la denuncia'})
-            }else{
-                Denuncia.findByIdAndUpdate({_id: idDenuncia}, {status: 'Finalizado'}, {new: true}, (err,denunciaFin)=>{
-                if(err){
-                    return res.status(500).send({ message: 'error en la peticion'  + err})
-                }else if(denunciaFin){
-                    User.findByIdAndUpdate({ _id: denunciaFound.userId }, { estado: 'Sin denuncia' }, { new: true }, (err, userState) => {
-                    })
-                    User.findByIdAndUpdate({ _id: req.user.sub }, { estado: 'DISPONIBLE' }, { new: true }, (err, poliState) => {
-                    })
-                    return res.send(denunciaFin)
-                }else{
-                    return res.status(500).send({ message: 'no se pudo finalizar la denuncia'})
-                }
-            })
-            }
-            
+            return res.status(500).send({ message: 'error en la peticion'})
+        } else if(denunciasFound){
+            return res.send(denunciasFound)
         }else{
-            return res.status(500).send({ message: 'no se encontro la denuncia'})
+            return res.status(500).send({ message:'no se encontraron denuncias'})
         }
     })
 }
@@ -193,5 +179,5 @@ module.exports = {
     listDenunciasPoli,
     listDenunciasActivas,
     editDenuncia,
-    finDenuncia
+    OneDenuncia
 }

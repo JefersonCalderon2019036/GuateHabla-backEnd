@@ -12,7 +12,7 @@ api.delete('/userDelete/:idU', mdAuth.ensureAuth, userController.deleteUser)
 api.get('/getUsers', mdAuth.ensureAuth,userController.getUsers)
 api.get('/getUserId/:idU', mdAuth.ensureAuth, userController.getUserId)
 api.get('/getUserIdAdmin/:idU', mdAuth.ensureAuth, userController.getUserIdAdmin)
-api.put('/updateUserAdmin/:idU', mdAuth.ensureAuth, userController.updateUserAdmin)
+api.put('/updateUserAdmin/:idUsuario', mdAuth.ensureAuth, userController.updateUserAdmin)
 api.delete('/deleteUserAdmin/:idU', mdAuth.ensureAuth, userController.deleteUserAdmin)
 api.post('/saveUserAdmin', mdAuth.ensureAuth, userController.saveUserAdmin)
 

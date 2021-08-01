@@ -10,6 +10,6 @@ api.get('/listDenuncias',mdAuth.ensureAuth, denunciaController.listDenuncias);
 api.get('/listDenunciasUser/:idU',mdAuth.ensureAuth, denunciaController.listDenunciasUser);
 api.get('/listDenunciasPoli/:idP',mdAuth.ensureAuth, denunciaController.listDenunciasPoli);
 api.get('/listDenunciasActivas',mdAuth.ensureAuth, denunciaController.listDenunciasActivas);
+api.get('/OneDenuncia/:idD',mdAuth.ensureAuth, denunciaController.OneDenuncia);
 api.put('/editDenuncia/:idD',mdAuth.ensureAuth, denunciaController.editDenuncia);
-api.put('/finDenuncia/:idD',mdAuth.ensureAuth, denunciaController.finDenuncia);
 module.exports = api
