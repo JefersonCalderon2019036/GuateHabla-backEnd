@@ -6,7 +6,7 @@ var User = require('./src/models/user')
 var bcrypt = require('bcrypt-nodejs')
 
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/GuateHablaBD', {useNewUrlParser: true, useFindAndModify: true})
+mongoose.connect('mongodb+srv://root:<root>@cluster0.xvp7x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useFindAndModify: true})
     .then(()=>{
         console.log('Estas conectado a la base de datos')
 
@@ -43,8 +43,8 @@ mongoose.connect('mongodb://localhost:27017/GuateHablaBD', {useNewUrlParser: tru
             }
         }) 
 
-        app.listen(3000, ()=>{
-            console.log('El Servidor esta corriendo en el puerto 3000')
+        app.listen(process.env.PORT || 3000, ()=>{
+            console.log('El Servidor esta corriendo')
         })
     })
     .catch(err=>console.log(err))
