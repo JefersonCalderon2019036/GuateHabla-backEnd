@@ -21,12 +21,12 @@ function saveNoticiasAdmin(req, res){
             $or:[
                 {titulo: noticiasModel.titulo},
         ]}).exec((err, noticiasStored)=>{
-            if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+            if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
             if(noticiasStored && noticiasStored.length >= 1){
                 return res.status(400).send({mensaje: 'La noticia o el titulo que intentas ingresar ya existe'})
             }else{
                 noticiasModel.save((err, noticiasSave)=>{
-                    if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+                    if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
                     if(noticiasSave){
                         return res.status(200).send(noticiasSave)
                     }else{
@@ -49,7 +49,7 @@ function updateNoticiasAdmin(req, res){
     }
 
     Noticias.findByIdAndUpdate(noticiasId, update, {new:true}, (err, noticiasUpdate)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
         if(!noticiasUpdate) return res.status(400).send({mensaje: 'Error al editar la noticia'})
 
         return res.status(200).send(noticiasUpdate)
@@ -64,7 +64,7 @@ function deleteNoticiasAdmin(req, res){
     }
 
     Noticias.findByIdAndDelete(noticiasId, (err, noticiaDelete)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
         if(!noticiaDelete) return res.status(400).send({mensaje: 'Error al eliminar la noticia'})
 
         return res.status(200).send({mensaje: 'Se elimino correctamente la noticia con id: '+noticiasId})
@@ -74,7 +74,7 @@ function deleteNoticiasAdmin(req, res){
 function getNoticias(req, res){
 
     Noticias.find((err, noticiasStored)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
         if(!noticiasStored) return res.status(404).send({mensaje: 'Error al obtener Noticias'})
         if(noticiasStored <= 0){
             return res.status(200).send({mensaje: 'No hay ninguna noticias para mostrar'})
@@ -89,7 +89,7 @@ function getNoticiasId(req, res){
     var noticiasId = req.params.nId
 
     Noticias.findOne({ $or: [{ _id: noticiasId }] }).exec((err, noticiasStored)=>{
-        if(err) return res.status(500).send({mensaje: 'Error en la peticion' + err})
+        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
         if(!noticiasStored) return res.status(400).send({mensaje: 'Error al ver noticia'})
 
         return res.status(200).send(noticiasStored)

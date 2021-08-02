@@ -5,70 +5,87 @@ var User = require('../models/user')
 var Chat = require('../models/chat')
 
 function verChat(req, res) {
-   var idChat = req.params.idC
+   var iduser = req.params.iduser
     
-    Chat.findById({ _id: idChat}, (err, chatFound) => {
-        if(err){
-            return res.status(500).send({ message: 'error en la peticion' + err})
-        }else if(chatFound){
-            if((chatFound.userId === req.user.sub) || (chatFound.encargadoId === req.user.sub)){
-                return res.status(500).send({ message: 'no tienes permiso para ver este chat'})
+        Chat.findOne({ $or: [{ userId: iduser },{status: 'ACTIVO'}] }).exec ((err, userStored)=>{
+            if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+            if(userStored){
+                return res.status(200).send(userStored)
+            }else{
+                Chat.findOne({ $or: [{ encargadoId: iduser },{status: 'ACTIVO'}] }).exec ((err, userStored2)=>{
+                    if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+                    if(userStored2){
+                        return res.status(200).send(userStored2)
+                    }else{
+                        return res.status(500).send({ message: 'No se encontro chat para ti'})
+                    }
+            
+                })
             }
-            return res.send(chatFound)
-        }else{
-            return res.status(500).send({ message:'no se encontro el chat'})
-        }
-    })
+        })
 }
 
 function sendMessage(req, res) {
     var params = req.body;
-    var idChat = req.params.idC;
-    var userId = req.user.sub;
+    var iduser = req.params.iduser
 
-    Chat.findByIdAndUpdate(idChat, {
-        $push: {
-            Messages: {
-                idUserMessage: userId,
-                mensaje: params.mensaje
-            }
-        }
-    }, {new: true}, (err, mensajeAgregado)=>{
-        if(err){
-            return res.status(500).send({ message: 'error en la peticion' + err})
-        }else if(mensajeAgregado){
-            return res.send(mensajeAgregado)
+    Chat.findOne({ $or: [{ userId: iduser },{status: 'ACTIVO'}] }).exec ((err, userStored)=>{
+        if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+        if(userStored){
+            Chat.findByIdAndUpdate(userStored._id, {
+                $push: {
+                    Messages: {
+                        idUserMessage: iduser,
+                        mensaje: params.mensaje
+                    }
+                }
+            }, {new: true}, (err, mensajeAgregado)=>{
+                if(err){
+                    return res.status(500).send({ message: 'error en la peticion' + err})
+                }else if(mensajeAgregado){
+                    return res.send(mensajeAgregado)
+                }else{
+                    return res.status(500).send({ message:'no se pudo enviar el mensaje'})
+                }
+            })
         }else{
-            return res.status(500).send({ message:'no se pudo enviar el mensaje'})
+            Chat.findOne({ $or: [{ encargadoId: iduser },{status: 'ACTIVO'}] }).exec ((err, userStored2)=>{
+                if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+                if(userStored2){
+                    Chat.findByIdAndUpdate(userStored2._id, {
+                        $push: {
+                            Messages: {
+                                idUserMessage: iduser,
+                                mensaje: params.mensaje
+                            }
+                        }
+                    }, {new: true}, (err, mensajeAgregado)=>{
+                        if(err){
+                            return res.status(500).send({ message: 'error en la peticion' + err})
+                        }else if(mensajeAgregado){
+                            return res.send(mensajeAgregado)
+                        }else{
+                            return res.status(500).send({ message:'no se pudo enviar el mensaje'})
+                        }
+                    })
+                }else{
+                    return res.status(500).send({ message: 'No se encontro chat para ti'})
+                }
+        
+            })
         }
     })
 }
 
 function endChat(req, res) {
     var idChat = req.params.idC;
-    var idDenuncia = req.params.idD
-
-    Denuncia.findOne({_id: idDenuncia}, (err, denunciaFound) =>{
-        if(denunciaFound.status == 'En revision'){
-            return res.status(500).send({ message: 'no se puede eliminar el chat por que la denuncia sigue en revision'})
-        }
-        if(err){
-            return res.status(500).send({ message : 'error en la peticion' + err})
-        }else if(denunciaFound){
-            Chat.findByIdAndDelete({ _id: idChat}, (err, chatDelete) =>{
-                if(err){
-                    return res.status(500).send({ message: 'error en la peticion' + err})
-                }else if(chatDelete){
-                    return res.send(chatDelete)
-                }else{
-                    return res.status(500).send({ message: 'no se elimino el chat'})
-                }
-            })
-        }else{
-            return res.status(500).send({ message: 'no se encontro la denuncia'})
-        }
+    Chat.findByIdAndDelete(idChat, (err, chateliminado) => {
+        if(err) return res.status(400).send({mensaje: 'Error en la peticion'})
+        if(!chateliminado) return res.status(404).send({mensaje: 'No se pudo elimiar el chat'})
+        return res.status(200).send(chateliminado)
     })
 }
+
 
 module.exports = {
     verChat,

@@ -32,7 +32,7 @@ mongoose.connect('mongodb+srv://root:<root>@cluster0.xvp7x.mongodb.net/myFirstDa
                     userModel.password = bcryptPassword
 
                     userModel.save((err, userSave)=>{
-                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'  + err})
+                        if(err) return res.status(500).send({mensaje: 'Error en la peticion'})
                         if(userSave){
                             return console.log(userSave)
                         }else{
