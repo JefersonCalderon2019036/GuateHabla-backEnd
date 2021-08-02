@@ -6,7 +6,7 @@ var User = require('./src/models/user')
 var bcrypt = require('bcrypt-nodejs')
 
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb+srv://root:<root>@cluster0.xvp7x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useFindAndModify: true})
+mongoose.connect('mongodb+srv://root:root@cluster0.xvp7x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useFindAndModify: true})
     .then(()=>{
         console.log('Estas conectado a la base de datos')
 
